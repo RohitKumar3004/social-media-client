@@ -3,13 +3,21 @@ import "./Login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosClient } from "../../utils/axiosClient";
 import { KEY_ACCESS_TOKEN, setItem } from "../../utils/localStorageManager";
+import { useDispatch } from "react-redux";
+import { TOAST_SUCCESS } from "../../App";
+import { showToast } from "../../redux/slices/appConfigSlice";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   async function handleSubmit(e) {
-      e.preventDefault();
+    e.preventDefault();
+    dispatch(showToast({
+      type: TOAST_SUCCESS,
+      message:'login successfully'
+    }))
       try {
         const response = await axiosClient.post("/auth/login", {
             email,

@@ -2,20 +2,28 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Signup.scss";
 import { axiosClient } from "../../utils/axiosClient";
+import { useDispatch } from "react-redux";
+import { showToast } from "../../redux/slices/appConfigSlice";
+import { TOAST_SUCCESS } from "../../App";
 
 function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const dispatch = useDispatch();
   async function handleSubmit(e) {
     e.preventDefault();
+    dispatch(showToast({
+      type: TOAST_SUCCESS,
+      message:"User created successfully"
+    }))
     try {
       const result = await axiosClient.post("/auth/signup", {
         name,
         email,
         password,
       });
+      return result;
       // console.log(result);
     } catch (error) {
       // console.log(error);
